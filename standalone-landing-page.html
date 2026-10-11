@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insuranote - Quản lý hợp đồng bảo hiểm & Không bao giờ bỏ lỡ lịch tái tục</title>
+  <meta name="description" content="Insuranote - Nền tảng SaaS quản lý hợp đồng bảo hiểm an toàn (E2EE), tự động nhắc lịch tái tục và tra cứu quyền lợi siêu tốc dành cho đại lý và khách hàng.">
+  <meta property="og:title" content="Insuranote - Nền tảng E2EE cho Đại lý Bảo hiểm">
+  <meta property="og:description" content="Quản lý hợp đồng bảo hiểm & Không bao giờ bỏ lỡ lịch tái tục. Tra cứu quyền lợi 3 giây. Mã hóa đầu cuối E2EE chuẩn quân sự.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Space Grotesk & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Space Grotesk"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              navy: '#0B2046',
+              dark: '#071630',
+              accent: '#FFE500',
+              mint: '#D1FAE5',
+              softblue: '#E0E7FF',
+              yellow: '#FEF08A'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F8F9FA;
+      color: #0F172A;
+      overflow-x: hidden;
+      max-width: 100vw;
+      width: 100%;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    /* Neo-brutalism Core Utility Classes */
+    .brutal-border {
+      border: 3px solid #000000;
+    }
+    .brutal-border-sm {
+      border: 2px solid #000000;
+    }
+    .brutal-shadow {
+      box-shadow: 4px 4px 0px #000000;
+    }
+    .brutal-shadow-sm {
+      box-shadow: 2px 2px 0px #000000;
+    }
+    .brutal-shadow-lg {
+      box-shadow: 5px 5px 0px #000000;
+    }
+    .brutal-btn {
+      border: 2px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .brutal-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #000000;
+    }
+    .brutal-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px #000000;
+    }
+    .brutal-card {
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    @media (min-width: 640px) {
+      .brutal-card {
+        box-shadow: 5px 5px 0px #000000;
+      }
+      .brutal-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 7px 7px 0px #000000;
+      }
+    }
+  </style>
+</head>
+<body class="w-full max-w-full overflow-x-hidden selection:bg-[#FFE500] selection:text-black">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-[#0B2046] text-white text-xs md:text-sm font-bold py-2.5 px-3 text-center border-b-2 border-black flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+    <span class="bg-[#FFE500] text-black px-2 py-0.5 text-[11px] sm:text-xs font-black uppercase brutal-border-sm shrink-0">
+      EARLY ACCESS
+    </span>
+    <span class="leading-tight">
+      Tặng <strong>6 tháng PRO miễn phí</strong> cho 100 đại lý đầu tiên vào danh sách chờ!
+    </span>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white border-b-[3px] border-black">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3 sm:gap-8">
+      <!-- Logo Insuranote -->
+      <a href="#" class="flex items-center gap-2 sm:gap-3 shrink-0 group min-w-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 bg-[#FFE500] brutal-border flex items-center justify-center shadow-[2px_2px_0px_#000] sm:shadow-[3px_3px_0px_#000] group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+          <svg class="w-5 h-5 sm:w-6 sm:h-6 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+          </svg>
+        </div>
+        <div class="flex flex-col min-w-0">
+          <span class="font-display text-xl sm:text-2xl font-black tracking-tight text-[#0B2046] uppercase leading-none truncate">
+            INSURANOTE
+          </span>
+          <span class="text-[9px] sm:text-[10px] font-bold text-slate-500 tracking-wider uppercase mt-0.5 truncate">
+            E2EE Insurance SaaS
+          </span>
+        </div>
+      </a>
+
+      <!-- Quick Nav Links -->
+      <nav class="hidden md:flex items-center gap-6 lg:gap-7 text-sm font-bold text-[#0B2046]">
+        <a href="#features" class="hover:text-amber-600 transition-colors whitespace-nowrap">Tính năng</a>
+        <a href="#demo" class="hover:text-amber-600 transition-colors whitespace-nowrap">Tra cứu thử</a>
+        <a href="#security" class="hover:text-amber-600 transition-colors whitespace-nowrap">Bảo mật E2EE</a>
+        <a href="#faq" class="hover:text-amber-600 transition-colors whitespace-nowrap">Hỏi đáp</a>
+      </nav>
+
+      <!-- Primary Action CTA -->
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        <a href="#waitlist-form" class="bg-[#FFE500] text-black font-extrabold text-xs sm:text-sm px-3.5 py-2 sm:px-5 sm:py-2.5 brutal-btn uppercase tracking-wide flex items-center gap-1.5 sm:gap-2 cursor-pointer whitespace-nowrap">
+          <span>Đăng ký sớm</span>
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-8 pb-16 sm:pt-14 sm:pb-20 md:pt-20 md:pb-28 overflow-hidden bg-[#F8F9FA] border-b-[3px] border-black">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <!-- Hero Text & Form Column -->
+        <div class="lg:col-span-7 flex flex-col items-start min-w-0 w-full">
+          <div class="inline-flex items-center gap-2 bg-[#E0E7FF] border-2 border-black px-3 py-1.5 brutal-shadow-sm mb-4 sm:mb-6 font-bold text-[11px] sm:text-xs uppercase tracking-wider text-[#0B2046] max-w-full">
+            <svg class="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span class="truncate">Dành riêng cho Đại lý Bảo hiểm Nhân thọ &amp; Phi nhân thọ</span>
+          </div>
+
+          <!-- Headline H1 -->
+          <h1 class="font-display text-2xl sm:text-4xl lg:text-5xl font-black text-[#0B2046] tracking-tight leading-[1.2] mb-4 sm:mb-6 break-words w-full">
+            Quản lý hợp đồng bảo hiểm &amp; <span class="bg-[#FFE500] px-1.5 sm:px-2 py-0.5 brutal-border-sm inline-block shadow-[2px_2px_0px_#000] sm:shadow-[3px_3px_0px_#000]">Không bao giờ</span> bỏ lỡ lịch tái tục.
+          </h1>
+
+          <!-- Subtitle -->
+          <p class="text-sm sm:text-base lg:text-lg text-slate-700 font-medium leading-relaxed mb-6 sm:mb-8 max-w-2xl">
+            Công cụ giúp đại lý tra cứu nhanh quyền lợi khách hàng trong 3 giây và trao quyền cho khách hàng tự quản lý mọi hợp đồng cá nhân ở cùng một nơi. An toàn tuyệt đối với mã hóa đầu cuối (E2EE).
+          </p>
+
+          <!-- Waitlist Form Component -->
+          <div id="waitlist-form" class="w-full max-w-xl mb-6">
+            <form id="hero-form" class="bg-white p-2.5 sm:p-3 brutal-border brutal-shadow flex flex-col sm:flex-row gap-2.5 sm:gap-3 w-full">
+              <div class="relative flex-1 min-w-0 w-full">
+                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                </svg>
+                <input
+                  type="email"
+                  id="hero-email-input"
+                  placeholder="Nhập email của bạn (vd: hoa.mdrt@gmail.com)..."
+                  required
+                  class="w-full min-w-0 pl-10 sm:pl-11 pr-3 sm:pr-4 py-2.5 sm:py-3 bg-[#F8FAFC] border-2 border-black text-slate-900 font-medium placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#FFE500] text-xs sm:text-sm md:text-base"
+                />
+              </div>
+              <button
+                type="submit"
+                class="w-full sm:w-auto bg-[#FFE500] hover:bg-[#FFD000] text-black font-black uppercase text-xs sm:text-sm md:text-base px-5 py-3 sm:px-6 sm:py-3.5 brutal-border brutal-shadow-sm hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all whitespace-nowrap cursor-pointer flex items-center justify-center gap-2 shrink-0"
+              >
+                <span>Vào danh sách chờ</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </button>
+            </form>
+
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-bold text-slate-600 mt-3 pl-0.5">
+              <div class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                <span>Miễn phí 6 tháng Pro</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[#0B2046] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                <span>Mã hóa E2EE không lộ dữ liệu</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>Đăng ký chỉ 30 giây</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Proof Counter -->
+          <div class="flex items-center gap-3 sm:gap-4 pt-4 border-t-2 border-black/10 w-full max-w-xl">
+            <div class="flex -space-x-2 shrink-0">
+              <div class="w-8 h-8 sm:w-9 sm:h-9 bg-emerald-400 rounded-full border-2 border-black flex items-center justify-center text-[10px] sm:text-xs font-black">MP</div>
+              <div class="w-8 h-8 sm:w-9 sm:h-9 bg-amber-400 rounded-full border-2 border-black flex items-center justify-center text-[10px] sm:text-xs font-black">HD</div>
+              <div class="w-8 h-8 sm:w-9 sm:h-9 bg-sky-400 rounded-full border-2 border-black flex items-center justify-center text-[10px] sm:text-xs font-black">TL</div>
+              <div class="w-8 h-8 sm:w-9 sm:h-9 bg-purple-400 rounded-full border-2 border-black flex items-center justify-center text-[10px] sm:text-xs font-black">+480</div>
+            </div>
+            <div class="text-xs font-bold text-slate-700 leading-snug">
+              <span class="text-[#0B2046] font-black" id="proof-counter">482+ đại lý</span> từ Manulife, Dai-ichi Life, Prudential, AIA, Bảo Việt đã tham gia.
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Visual Mockup Column -->
+        <div class="lg:col-span-5 relative w-full pr-1.5 pb-1.5 sm:pr-3 sm:pb-3">
+          <div class="absolute inset-0 bg-[#0B2046] translate-x-1.5 translate-y-1.5 sm:translate-x-3 sm:translate-y-3 brutal-border -z-10"></div>
+          <div class="bg-white brutal-border p-4 sm:p-5 relative w-full">
+            <div class="flex items-center justify-between pb-3 sm:pb-4 border-b-2 border-black mb-3 sm:mb-4">
+              <div class="flex items-center gap-1.5 sm:gap-2">
+                <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500 border border-black"></div>
+                <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-400 border border-black"></div>
+                <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500 border border-black"></div>
+                <span class="font-mono text-[10px] sm:text-xs font-bold ml-1 text-slate-700">Insuranote Agent</span>
+              </div>
+              <span class="bg-[#D1FAE5] text-emerald-800 text-[10px] sm:text-[11px] font-black px-1.5 sm:px-2 py-0.5 border border-black uppercase shrink-0">
+                E2EE BẢO MẬT
+              </span>
+            </div>
+
+            <!-- Contract Alert Card -->
+            <div class="bg-[#FEF08A] border-2 border-black p-3 sm:p-3.5 mb-3 brutal-shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-1.5 sm:gap-2">
+                <div class="min-w-0">
+                  <span class="text-[9px] sm:text-[10px] font-black uppercase text-amber-900 tracking-wider block">CẢNH BÁO TÁI TỤC SẮP ĐẾN HẠN</span>
+                  <h4 class="font-display font-black text-xs sm:text-sm text-[#0B2046] truncate">Khách hàng: Nguyễn Hoàng Nam</h4>
+                  <p class="text-[11px] sm:text-xs font-semibold text-slate-700 truncate">HĐ #PRU-9824102 · Gói Phú-Bảo Gia</p>
+                </div>
+                <span class="bg-red-500 text-white text-[10px] sm:text-xs font-black px-2 py-0.5 border border-black self-start shrink-0">Còn 7 ngày</span>
+              </div>
+              <div class="mt-2.5 pt-2 border-t border-black/20 flex flex-wrap items-center justify-between gap-2 text-xs">
+                <span class="font-bold text-slate-800 text-[11px] sm:text-xs">Phí: <strong>26.400.000 đ</strong></span>
+                <button onclick="alert('Mẫu tin nhắn nhắc tái tục chuyên nghiệp qua Zalo ZNS đã sẵn sàng!')" class="bg-white hover:bg-slate-50 text-black font-black text-[10px] sm:text-[11px] px-2 py-1 border border-black shadow-[1.5px_1.5px_0px_#000] cursor-pointer shrink-0">
+                  Nhắc Zalo 1 chạm ⚡
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick Benefits Box -->
+            <div class="bg-[#EFF6FF] border-2 border-black p-3 sm:p-3.5 mb-3">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] sm:text-xs font-black text-[#0B2046] uppercase flex items-center gap-1.5 truncate">
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+                  Tra cứu nhanh 3 giây
+                </span>
+                <span class="text-[9px] sm:text-[10px] font-mono font-bold text-slate-500 shrink-0">TỨC THÌ</span>
+              </div>
+              <div class="space-y-1.5 text-xs">
+                <div class="bg-white p-2 border border-black flex justify-between items-center gap-2">
+                  <span class="font-bold text-slate-800 text-[11px] sm:text-xs truncate">Nội trú / Nằm viện:</span>
+                  <span class="font-black text-emerald-700 text-[11px] sm:text-xs shrink-0">1.000.000.000 đ/năm</span>
+                </div>
+                <div class="bg-white p-2 border border-black flex justify-between items-center gap-2">
+                  <span class="font-bold text-slate-800 text-[11px] sm:text-xs truncate">Bệnh hiểm nghèo:</span>
+                  <span class="font-black text-blue-700 text-[11px] sm:text-xs shrink-0">100% (500 triệu)</span>
+                </div>
+                <div class="bg-white p-2 border border-black flex justify-between items-center gap-2">
+                  <span class="font-bold text-slate-800 text-[11px] sm:text-xs truncate">Tai nạn thương tật:</span>
+                  <span class="font-black text-amber-700 text-[11px] sm:text-xs shrink-0">Tối đa 300 triệu</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Client Space Box -->
+            <div class="bg-[#F3E8FF] border-2 border-black p-2.5 sm:p-3 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-purple-700 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"/></svg>
+                <div class="min-w-0">
+                  <div class="text-[11px] sm:text-xs font-black text-purple-950 truncate">Kho số khách hàng tự tải HĐ</div>
+                  <div class="text-[10px] sm:text-[11px] text-purple-800 font-medium truncate">Bảo hiểm xe, BHYT, PVI gia đình</div>
+                </div>
+              </div>
+              <span class="text-[10px] sm:text-[11px] bg-purple-200 border border-black px-1.5 sm:px-2 py-0.5 font-bold shrink-0">+3 HĐ</span>
+            </div>
+
+            <div class="mt-3 text-center">
+              <span class="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold text-slate-600 bg-slate-100 px-2 py-1 border border-black max-w-full truncate">
+                🔒 <span class="truncate">Chỉ bạn và khách hàng giữ khóa giải mã E2EE 256-bit</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logos Section -->
+  <section class="bg-white py-6 sm:py-8 border-b-[3px] border-black">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-center md:text-left">
+        <span class="font-display font-bold text-[11px] sm:text-xs uppercase tracking-wider text-slate-500">
+          Được thiết kế cho đại lý bảo hiểm thuộc các tập đoàn hàng đầu:
+        </span>
+        <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-8 font-black text-slate-800 text-xs sm:text-sm tracking-wider uppercase opacity-85">
+          <span>MANULIFE</span>
+          <span>PRUDENTIAL</span>
+          <span>DAI-ICHI LIFE</span>
+          <span>AIA VIETNAM</span>
+          <span>BẢO VIỆT</span>
+          <span>SUN LIFE</span>
+          <span>FWD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Features: Chunky Cards Layout -->
+  <section id="features" class="py-16 sm:py-24 bg-white border-b-[3px] border-black">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div class="inline-block bg-[#0B2046] text-white font-black text-xs px-3.5 py-1.5 border-2 border-black brutal-shadow-sm uppercase mb-3">
+          TÍNH NĂNG NỔI BẬT
+        </div>
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-black text-[#0B2046] tracking-tight">
+          Bộ công cụ toàn diện giúp đại lý bứt phá doanh số &amp; giữ chân khách
+        </h2>
+        <p class="mt-3 text-slate-700 font-medium text-xs sm:text-base">
+          Mỗi tính năng của Insuranote đều giải quyết trực diện một điểm nghẽn lớn trong công việc hàng ngày của đại lý bảo hiểm.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+        <!-- Feature 1 -->
+        <div class="bg-[#FEF08A] brutal-card p-5 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white brutal-border flex items-center justify-center mb-5 brutal-shadow-sm">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
+            </div>
+            <div class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-amber-900 mb-1">TÍNH NĂNG 01 · TỰ ĐỘNG HÓA</div>
+            <h3 class="font-display text-xl sm:text-2xl font-black text-[#0B2046] mb-3">Nhắc lịch tái tục tự động</h3>
+            <p class="text-slate-800 font-medium text-xs sm:text-sm leading-relaxed mb-5">
+              Quản lý vòng đời hợp đồng, chủ động chăm sóc khách hàng đúng thời điểm (trước 30, 15, 7 ngày). Tránh trễ hạn đóng phí bảo hiểm, bảo vệ tỷ lệ duy trì hợp đồng (K2 &gt; 85%) và nguồn thu nhập tái tục ổn định.
+            </p>
+            <div class="space-y-2 bg-white/80 p-3.5 border-2 border-black text-xs font-bold text-slate-900 mb-5">
+              <div>● Tự động tính ngày ân hạn 60 ngày đóng phí bảo hiểm</div>
+              <div>● Tạo sẵn tin nhắn Zalo/SMS cá nhân hóa kèm số phí và hạn nộp</div>
+              <div>● Báo cáo danh sách hợp đồng đến hạn từng tháng cho đại lý</div>
+            </div>
+          </div>
+          <div class="pt-3.5 border-t-2 border-black flex items-center justify-between text-xs font-black">
+            <span class="text-[#0B2046]">Chăm sóc đúng lúc</span>
+            <span class="bg-black text-white px-2 py-0.5 sm:px-2.5 sm:py-1">Bảo vệ chỉ số K2</span>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="bg-[#BFDBFE] brutal-card p-5 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white brutal-border flex items-center justify-center mb-5 brutal-shadow-sm">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+            </div>
+            <div class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-blue-900 mb-1">TÍNH NĂNG 02 · TRA CỨU TỨC THÌ</div>
+            <h3 class="font-display text-xl sm:text-2xl font-black text-[#0B2046] mb-3">Tra cứu quyền lợi siêu tốc</h3>
+            <p class="text-slate-800 font-medium text-xs sm:text-sm leading-relaxed mb-5">
+              Xem nhanh tóm tắt quyền lợi mà không cần lật tìm tài liệu rườm rà. Gõ nhanh từ khóa về nằm viện, nha khoa, thai sản hay bệnh hiểm nghèo để phản hồi khách hàng ngay lập tức khi họ cần thanh toán viện phí.
+            </p>
+            <div class="space-y-2 bg-white/80 p-3.5 border-2 border-black text-xs font-bold text-slate-900 mb-5">
+              <div>● Trả kết quả tóm tắt trong vòng 3 giây</div>
+              <div>● Xem danh sách bệnh viện bảo lãnh viện phí trực tiếp</div>
+              <div>● Xuất file tóm tắt quyền lợi đẹp mắt gửi ngay qua Zalo</div>
+            </div>
+          </div>
+          <div class="pt-3.5 border-t-2 border-black flex items-center justify-between text-xs font-black">
+            <span class="text-[#0B2046]">Phản hồi thần tốc</span>
+            <span class="bg-black text-white px-2 py-0.5 sm:px-2.5 sm:py-1">Chuyên nghiệp 5 sao</span>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="bg-[#D1FAE5] brutal-card p-5 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white brutal-border flex items-center justify-center mb-5 brutal-shadow-sm">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 13.5l-3 3m0 0l-3-3m3 3V7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-emerald-900 mb-1">TÍNH NĂNG 03 · KHO SỐ KHÁCH HÀNG</div>
+            <h3 class="font-display text-xl sm:text-2xl font-black text-[#0B2046] mb-3">Kho lưu trữ cho khách hàng cuối</h3>
+            <p class="text-slate-800 font-medium text-xs sm:text-sm leading-relaxed mb-5">
+              Cho phép khách hàng tự tải lên và lưu trữ các hợp đồng cá nhân khác của họ (bảo hiểm phi nhân thọ, BHXH, xe cộ, hợp đồng công ty khác). Tăng sự gắn kết trọn đời và giúp bạn hiểu rõ bức tranh tài chính toàn diện của khách.
+            </p>
+            <div class="space-y-2 bg-white/80 p-3.5 border-2 border-black text-xs font-bold text-slate-900 mb-5">
+              <div>● Khách hàng dùng ứng dụng hoàn toàn miễn phí</div>
+              <div>● Quản lý tập trung mọi hợp đồng của cả gia đình</div>
+              <div>● Dễ dàng tư vấn bổ sung khi nhận thấy quyền lợi còn thiếu hụt</div>
+            </div>
+          </div>
+          <div class="pt-3.5 border-t-2 border-black flex items-center justify-between text-xs font-black">
+            <span class="text-[#0B2046]">Cố vấn tài chính trọn đời</span>
+            <span class="bg-black text-white px-2 py-0.5 sm:px-2.5 sm:py-1">Tăng cơ hội Cross-sell</span>
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="bg-[#E9D5FF] brutal-card p-5 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-white brutal-border flex items-center justify-center mb-5 brutal-shadow-sm">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+            </div>
+            <div class="text-[11px] sm:text-xs font-black uppercase tracking-wider text-purple-900 mb-1">TÍNH NĂNG 04 · AN TOÀN E2EE</div>
+            <h3 class="font-display text-xl sm:text-2xl font-black text-[#0B2046] mb-3">Bảo mật mã hóa E2EE</h3>
+            <p class="text-slate-800 font-medium text-xs sm:text-sm leading-relaxed mb-5">
+              Dữ liệu của đại lý và khách hàng chỉ có người dùng mới xem được. Áp dụng chuẩn mã hóa đầu cuối AES-GCM 256-bit chuẩn ngân hàng. Ngay cả máy chủ Insuranote cũng không thể xem nội dung hợp đồng hay danh bạ của bạn.
+            </p>
+            <div class="space-y-2 bg-white/80 p-3.5 border-2 border-black text-xs font-bold text-slate-900 mb-5">
+              <div>● Kiến trúc Zero-Knowledge: Khóa giải mã lưu trên máy bạn</div>
+              <div>● Tuân thủ Nghị định bảo vệ dữ liệu cá nhân (PDPD)</div>
+              <div>● Không lo nguy cơ thất thoát danh sách khách hàng VIP</div>
+            </div>
+          </div>
+          <div class="pt-3.5 border-t-2 border-black flex items-center justify-between text-xs font-black">
+            <span class="text-[#0B2046]">An tâm tuyệt đối</span>
+            <span class="bg-black text-white px-2 py-0.5 sm:px-2.5 sm:py-1">Zero-Knowledge</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Benefits Lookup Demo -->
+  <section id="demo" class="py-14 sm:py-20 bg-[#F8F9FA] border-b-[3px] border-black">
+    <div class="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 sm:mb-12">
+        <div class="inline-block bg-[#FFE500] text-black font-black text-xs px-3 py-1 border-2 border-black brutal-shadow-sm uppercase mb-3">
+          DEMO TRỰC TIẾP
+        </div>
+        <h2 class="font-display text-xl sm:text-3xl md:text-4xl font-black text-[#0B2046] tracking-tight">
+          Trải nghiệm tốc độ tra cứu quyền lợi
+        </h2>
+        <p class="mt-3 text-slate-700 font-medium text-xs sm:text-base">
+          Gõ từ khóa quyền lợi bảo hiểm hoặc bấm các thẻ gợi ý dưới đây:
+        </p>
+      </div>
+
+      <div class="bg-white brutal-border brutal-shadow p-4 sm:p-6 md:p-8">
+        <div class="mb-5 sm:mb-6">
+          <div class="relative w-full">
+            <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+            <input
+              type="text"
+              id="benefit-search-input"
+              placeholder="Gõ từ khóa: nội trú, ung thư, nha khoa, tai nạn..."
+              class="w-full pl-10 sm:pl-12 pr-4 py-3 bg-[#FAF5FF] border-2 border-black font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#FFE500] text-xs sm:text-sm"
+            />
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-3">
+            <span class="text-[11px] sm:text-xs font-bold text-slate-500">Thử nhanh:</span>
+            <button onclick="setSearch('nội trú')" class="text-[11px] sm:text-xs font-bold bg-[#F8FAFC] hover:bg-[#FFE500] text-slate-800 px-2 sm:px-2.5 py-1 border border-black shadow-[1.5px_1.5px_0px_#000] cursor-pointer">Nội trú</button>
+            <button onclick="setSearch('ung thư')" class="text-[11px] sm:text-xs font-bold bg-[#F8FAFC] hover:bg-[#FFE500] text-slate-800 px-2 sm:px-2.5 py-1 border border-black shadow-[1.5px_1.5px_0px_#000] cursor-pointer">Ung thư</button>
+            <button onclick="setSearch('nha khoa')" class="text-[11px] sm:text-xs font-bold bg-[#F8FAFC] hover:bg-[#FFE500] text-slate-800 px-2 sm:px-2.5 py-1 border border-black shadow-[1.5px_1.5px_0px_#000] cursor-pointer">Nha khoa</button>
+            <button onclick="setSearch('phẫu thuật')" class="text-[11px] sm:text-xs font-bold bg-[#F8FAFC] hover:bg-[#FFE500] text-slate-800 px-2 sm:px-2.5 py-1 border border-black shadow-[1.5px_1.5px_0px_#000] cursor-pointer">Phẫu thuật</button>
+            <button onclick="setSearch('')" class="text-[11px] sm:text-xs font-bold bg-slate-200 hover:bg-slate-300 text-slate-800 px-2 sm:px-2.5 py-1 border border-black cursor-pointer">Xem tất cả</button>
+          </div>
+        </div>
+
+        <!-- Benefit items container -->
+        <div id="benefit-list" class="space-y-3">
+          <!-- Card 1 -->
+          <div class="benefit-card p-3.5 sm:p-4 bg-white border-2 border-black shadow-[2px_2px_0px_#000] sm:shadow-[3px_3px_0px_#000]" data-keywords="nội trú nằm viện viện phí qua đêm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 pb-2 mb-2 border-b border-black/10">
+              <h4 class="font-display font-black text-sm sm:text-base text-[#0B2046] truncate">Nội trú &amp; Nằm viện điều trị</h4>
+              <span class="font-mono text-xs sm:text-sm font-black text-emerald-700 bg-emerald-50 px-2 sm:px-2.5 py-0.5 border border-emerald-800 self-start sm:self-auto break-words">1.500.000.000 đ / năm</span>
+            </div>
+            <p class="text-xs font-medium text-slate-700 leading-relaxed mb-2">
+              <strong>Chi tiết:</strong> Chi trả 100% chi phí phòng tiêu chuẩn, tối đa 3.500.000 đ/ngày. Không đồng chi trả.
+            </p>
+            <div class="text-[11px] font-bold text-slate-500">🏥 Bảo lãnh: Vinmec, Việt Pháp, FV, Hoàn Mỹ...</div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="benefit-card p-3.5 sm:p-4 bg-white border-2 border-black shadow-[2px_2px_0px_#000] sm:shadow-[3px_3px_0px_#000]" data-keywords="ung thư bệnh hiểm nghèo đột quỵ tim">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 pb-2 mb-2 border-b border-black/10">
+              <h4 class="font-display font-black text-sm sm:text-base text-[#0B2046] truncate">Bệnh hiểm nghèo &amp; Ung thư</h4>
+              <span class="font-mono text-xs sm:text-sm font-black text-blue-700 bg-blue-50 px-2 sm:px-2.5 py-0.5 border border-blue-800 self-start sm:self-auto break-words">1.000.000.000 đ (Tiền mặt)</span>
+            </div>
+            <p class="text-xs font-medium text-slate-700 leading-relaxed mb-2">
+              <strong>Chi tiết:</strong> Giai đoạn sớm chi trả 25% (250tr); Giai đoạn sau chi trả 100% (1 tỷ); Bệnh hiểm nghèo kép thêm 50%.
+            </p>
+            <div class="text-[11px] font-bold text-slate-500">🏥 Tuyến áp dụng: Bệnh viện chuyên khoa ung bướu toàn quốc.</div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="benefit-card p-3.5 sm:p-4 bg-white border-2 border-black shadow-[2px_2px_0px_#000] sm:shadow-[3px_3px_0px_#000]" data-keywords="ngoại trú nha khoa răng răng miệng khám">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 pb-2 mb-2 border-b border-black/10">
+              <h4 class="font-display font-black text-sm sm:text-base text-[#0B2046] truncate">Ngoại trú &amp; Chăm sóc Nha khoa</h4>
+              <span class="font-mono text-xs sm:text-sm font-black text-purple-700 bg-purple-50 px-2 sm:px-2.5 py-0.5 border border-purple-800 self-start sm:self-auto break-words">15.000.000 đ / năm</span>
+            </div>
+            <p class="text-xs font-medium text-slate-700 leading-relaxed mb-2">
+              <strong>Chi tiết:</strong> Hạn mức 1.200.000 đ/lần khám. Hỗ trợ cạo vôi răng, trám răng sâu, nhổ răng bệnh lý.
+            </p>
+            <div class="text-[11px] font-bold text-slate-500">🏥 Phòng khám đa khoa &amp; hệ thống nha khoa liên kết.</div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="benefit-card p-3.5 sm:p-4 bg-white border-2 border-black shadow-[2px_2px_0px_#000] sm:shadow-[3px_3px_0px_#000]" data-keywords="phẫu thuật mổ gây mê thủ thuật">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 pb-2 mb-2 border-b border-black/10">
+              <h4 class="font-display font-black text-sm sm:text-base text-[#0B2046] truncate">Phẫu thuật &amp; Thủ thuật</h4>
+              <span class="font-mono text-xs sm:text-sm font-black text-emerald-700 bg-emerald-50 px-2 sm:px-2.5 py-0.5 border border-emerald-800 self-start sm:self-auto break-words">Tối đa 250.000.000 đ / đợt</span>
+            </div>
+            <p class="text-xs font-medium text-slate-700 leading-relaxed mb-2">
+              <strong>Chi tiết:</strong> Chi phí kíp mổ, gây mê hồi sức, phòng mổ và vật tư tiêu hao theo danh mục.
+            </p>
+            <div class="text-[11px] font-bold text-slate-500">🏥 Bệnh viện công và tư nhân đạt chuẩn Bộ Y tế.</div>
+          </div>
+        </div>
+
+        <div class="mt-5 sm:mt-6 pt-3 sm:pt-4 border-t-2 border-black flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#F8FAFC] p-3 border border-black">
+          <span class="text-xs font-bold text-slate-600 text-center sm:text-left">
+            Tra cứu bằng Insuranote chỉ mất <strong>0.3 giây</strong> thay vì 15 phút lật giở hợp đồng giấy.
+          </span>
+          <a href="#waitlist-form" class="w-full sm:w-auto text-center bg-[#FFE500] text-black text-xs font-black uppercase px-4 py-2 brutal-border shadow-[2px_2px_0px_#000] hover:-translate-x-0.5 cursor-pointer">
+            Đăng ký để dùng thử
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security E2EE Details -->
+  <section id="security" class="py-14 sm:py-20 bg-[#0B2046] text-white border-b-[3px] border-black">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div class="lg:col-span-6">
+          <div class="inline-block bg-[#FFE500] text-black font-black text-xs px-3 py-1 border-2 border-black brutal-shadow-sm uppercase mb-4">
+            BẢO MẬT TUYỆT ĐỐI
+          </div>
+          <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight mb-4 sm:mb-6">
+            Mã hóa đầu cuối (E2EE) chuẩn quân sự bảo vệ danh bạ &amp; uy tín đại lý
+          </h2>
+          <p class="text-slate-300 font-medium text-xs sm:text-base leading-relaxed mb-6">
+            Dữ liệu hợp đồng bảo hiểm và thông tin khách hàng được mã hóa ngay trên thiết bị trước khi lưu. Chỉ bạn và khách hàng giữ khóa giải mã (Zero-Knowledge). Không ai khác—kể cả Insuranote—có thể giải mã thông tin.
+          </p>
+          <div class="space-y-3.5">
+            <div class="bg-[#132D5A] border-2 border-white/40 p-3.5 sm:p-4 shadow-[3px_3px_0px_#000]">
+              <h4 class="font-bold text-xs sm:text-sm text-[#FFE500] mb-1">🔒 Không lưu Private Key trên Server</h4>
+              <p class="text-xs text-slate-300">Khóa giải mã nằm an toàn trong vùng bảo mật thiết bị (Secure Enclave / Keystore).</p>
+            </div>
+            <div class="bg-[#132D5A] border-2 border-white/40 p-3.5 sm:p-4 shadow-[3px_3px_0px_#000]">
+              <h4 class="font-bold text-xs sm:text-sm text-[#FFE500] mb-1">🛡️ Tuân thủ Luật Bảo vệ dữ liệu cá nhân</h4>
+              <p class="text-xs text-slate-300">Hoàn toàn an tâm về tính pháp lý khi lưu trữ và quản lý thông tin khách hàng.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 w-full">
+          <div class="bg-white text-black brutal-border brutal-shadow-lg p-4 sm:p-6 md:p-8 w-full">
+            <div class="flex items-center justify-between pb-3 sm:pb-4 border-b-2 border-black mb-4 sm:mb-6">
+              <span class="font-display font-black text-xs sm:text-sm uppercase">SƠ ĐỒ BẢO MẬT ZERO-KNOWLEDGE</span>
+              <span class="bg-[#FFE500] text-black font-black text-[11px] sm:text-xs px-2 py-0.5 border border-black shrink-0">AES-256 GCM</span>
+            </div>
+            <div class="space-y-3 font-mono text-xs">
+              <div class="p-3 bg-[#F8FAFC] border-2 border-black">
+                <div class="font-bold text-blue-900 mb-1 text-[11px] sm:text-xs">1. ĐẠI LÝ NHẬP THÔNG TIN</div>
+                <div class="text-slate-600 font-sans text-xs">Thiết bị sinh mã hóa cục bộ bằng khóa riêng (Private Key).</div>
+              </div>
+              <div class="text-center font-bold text-slate-500 py-1 text-[11px] sm:text-xs break-words">▼ CIPHERTEXT MÃ HÓA (KHÔNG THỂ ĐỌC) ▼</div>
+              <div class="p-3 bg-red-50 border-2 border-black">
+                <div class="font-bold text-red-900 mb-1 text-[11px] sm:text-xs">2. CLOUD SERVER INSURANOTE</div>
+                <div class="text-slate-600 font-sans text-xs">Chỉ lưu chuỗi ký tự đã mã hóa. Quản trị viên server hoàn toàn KHÔNG THỂ đọc.</div>
+              </div>
+              <div class="text-center font-bold text-slate-500 py-1 text-[11px] sm:text-xs break-words">▼ GIẢI MÃ TẠI ĐẦU CUỐI ▼</div>
+              <div class="p-3 bg-emerald-50 border-2 border-black">
+                <div class="font-bold text-emerald-900 mb-1 text-[11px] sm:text-xs">3. THIẾT BỊ KHÁCH HÀNG</div>
+                <div class="text-slate-600 font-sans text-xs">Khách hàng mở app, thiết bị dùng khóa bảo mật để hiển thị hợp đồng.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials: Tạm ẩn theo yêu cầu -->
+
+  <!-- FAQ Accordion Section -->
+  <section id="faq" class="py-14 sm:py-20 bg-[#F1F5F9] border-b-[3px] border-black">
+    <div class="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="text-center mb-10 sm:mb-14">
+        <div class="inline-block bg-[#FFE500] text-black font-black text-xs px-3 py-1 border-2 border-black brutal-shadow-sm uppercase mb-3">
+          HỎI ĐÁP
+        </div>
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-black text-[#0B2046] tracking-tight">
+          Câu hỏi thường gặp của đại lý
+        </h2>
+      </div>
+
+      <div class="space-y-3.5 sm:space-y-4">
+        <!-- FAQ 1 -->
+        <div class="bg-white brutal-border brutal-shadow">
+          <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-3 font-display font-black text-sm sm:text-base text-[#0B2046] hover:bg-slate-50 transition-colors cursor-pointer">
+            <span>Dữ liệu khách hàng của tôi có bị Insuranote xem được không?</span>
+            <span class="w-7 h-7 sm:w-8 sm:h-8 bg-[#FFE500] brutal-border-sm flex items-center justify-center shrink-0 font-bold text-base faq-icon">+</span>
+          </button>
+          <div class="faq-content hidden px-4 pb-4 sm:px-5 sm:pb-5 pt-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed border-t-2 border-black/10">
+            Tuyệt đối không. Insuranote áp dụng mã hóa đầu cuối (E2EE). Mọi dữ liệu hợp đồng và thông tin cá nhân đều được mã hóa trên thiết bị của bạn trước khi đồng bộ. Ngay cả đội ngũ kỹ thuật của Insuranote cũng không thể xem hay trích xuất thông tin.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="bg-white brutal-border brutal-shadow">
+          <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-3 font-display font-black text-sm sm:text-base text-[#0B2046] hover:bg-slate-50 transition-colors cursor-pointer">
+            <span>Tôi là đại lý của một công ty, khách có thể lưu hợp đồng của hãng khác không?</span>
+            <span class="w-7 h-7 sm:w-8 sm:h-8 bg-[#FFE500] brutal-border-sm flex items-center justify-center shrink-0 font-bold text-base faq-icon">+</span>
+          </button>
+          <div class="faq-content hidden px-4 pb-4 sm:px-5 sm:pb-5 pt-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed border-t-2 border-black/10">
+            Hoàn toàn được! Khách hàng có thể tự do tải lên hợp đồng của bất kỳ công ty nào (Manulife, Dai-ichi Life, Prudential, AIA, Bảo Việt, MIC, PVI...), bảo hiểm y tế hoặc bảo hiểm xe. Điều này giúp bạn đóng vai trò là "cố vấn tài chính gia đình toàn diện", tạo cơ hội tư vấn các quyền lợi còn thiếu.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="bg-white brutal-border brutal-shadow">
+          <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-3 font-display font-black text-sm sm:text-base text-[#0B2046] hover:bg-slate-50 transition-colors cursor-pointer">
+            <span>Khách hàng của tôi có phải trả phí khi dùng ứng dụng không?</span>
+            <span class="w-7 h-7 sm:w-8 sm:h-8 bg-[#FFE500] brutal-border-sm flex items-center justify-center shrink-0 font-bold text-base faq-icon">+</span>
+          </button>
+          <div class="faq-content hidden px-4 pb-4 sm:px-5 sm:pb-5 pt-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed border-t-2 border-black/10">
+            Khách hàng cuối được sử dụng kho lưu trữ hợp đồng cá nhân HOÀN TOÀN MIỄN PHÍ trọn đời. Họ có thể tra cứu quyền lợi và xem thẻ bảo hiểm số mọi lúc mọi nơi.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="bg-white brutal-border brutal-shadow">
+          <button onclick="toggleFaq(this)" class="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-3 font-display font-black text-sm sm:text-base text-[#0B2046] hover:bg-slate-50 transition-colors cursor-pointer">
+            <span>Chính sách ưu đãi cho đại lý vào Waitlist là gì?</span>
+            <span class="w-7 h-7 sm:w-8 sm:h-8 bg-[#FFE500] brutal-border-sm flex items-center justify-center shrink-0 font-bold text-base faq-icon">+</span>
+          </button>
+          <div class="faq-content hidden px-4 pb-4 sm:px-5 sm:pb-5 pt-1 text-xs sm:text-sm text-slate-700 font-medium leading-relaxed border-t-2 border-black/10">
+            100 đại lý đầu tiên tham gia danh sách chờ sẽ được kích hoạt gói tài khoản PRO miễn phí trong 06 tháng (trị giá 1.800.000 VNĐ) ngay khi ứng dụng ra mắt chính thức, kèm quyền ưu tiên trải nghiệm các tính năng mới nhất.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom High-Converting CTA Section -->
+  <section class="py-14 sm:py-20 bg-[#0B2046] border-b-[3px] border-black">
+    <div class="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="bg-[#FFE500] brutal-border brutal-shadow p-5 sm:p-8 md:p-12 text-center w-full">
+        <span class="inline-block bg-black text-[#FFE500] font-black text-[11px] sm:text-xs px-2.5 sm:px-3 py-1 uppercase tracking-wider mb-3 sm:mb-4 border border-black">
+          ĐĂNG KÝ SỚM HÔM NAY
+        </span>
+
+        <h2 class="font-display text-xl sm:text-3xl md:text-5xl font-black text-black tracking-tight mb-3 sm:mb-4">
+          Sẵn sàng nâng tầm dịch vụ đại lý và giữ chân khách hàng trọn đời?
+        </h2>
+
+        <p class="text-slate-900 font-bold text-xs sm:text-base lg:text-lg max-w-2xl mx-auto mb-6 sm:mb-8">
+          Tham gia ngay hôm nay để nhận quyền sử dụng <strong>Insuranote PRO miễn phí 06 tháng</strong> dành cho 100 đại lý đầu tiên. Không cần thẻ tín dụng.
+        </p>
+
+        <!-- Form 2 -->
+        <form id="bottom-form" class="max-w-xl mx-auto flex flex-col sm:flex-row gap-2.5 sm:gap-3 bg-white p-2.5 sm:p-3 brutal-border brutal-shadow mb-5 sm:mb-6 w-full">
+          <div class="relative flex-1 min-w-0 w-full">
+            <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+            <input
+              type="email"
+              id="bottom-email-input"
+              placeholder="Nhập email của bạn (vd: hoa.mdrt@gmail.com)..."
+              required
+              class="w-full min-w-0 pl-10 sm:pl-11 pr-3 sm:pr-4 py-2.5 sm:py-3 bg-[#F8FAFC] border-2 border-black text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#FFE500] text-xs sm:text-sm"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full sm:w-auto bg-[#0B2046] hover:bg-[#132D5A] text-white font-black uppercase text-xs sm:text-sm px-5 py-3 sm:px-6 sm:py-3.5 brutal-border shadow-[2px_2px_0px_#000] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all whitespace-nowrap cursor-pointer flex items-center justify-center gap-2 shrink-0"
+          >
+            <span>Nhận 6 tháng Pro miễn phí</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+        </form>
+
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs font-black text-slate-800">
+          <span>✓ Đã có 480+ đại lý tham gia</span>
+          <span>·</span>
+          <span>✓ Không spam</span>
+          <span>·</span>
+          <span>✓ Bảo mật tuyệt đối E2EE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white py-10 sm:py-12 border-t-[3px] border-black">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-10">
+        <div class="sm:col-span-2">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 bg-[#FFE500] brutal-border flex items-center justify-center">
+              <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+            </div>
+            <span class="font-display text-xl font-black text-[#0B2046] uppercase">INSURANOTE</span>
+          </div>
+          <p class="text-xs text-slate-600 font-medium max-w-sm leading-relaxed mb-4">
+            Nền tảng SaaS quản lý hợp đồng bảo hiểm an toàn (E2EE) và tự động nhắc lịch tái tục dành riêng cho đại lý và khách hàng tại Việt Nam.
+          </p>
+          <div class="text-xs font-bold text-slate-500">
+            🔒 Cam kết chuẩn mã hóa AES-GCM 256-bit &amp; Zero-Knowledge.
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-black text-xs uppercase tracking-wider text-[#0B2046] mb-3">Khám phá</h4>
+          <ul class="space-y-2 text-xs font-bold text-slate-700">
+            <li><a href="#features" class="hover:text-amber-600">Nhắc lịch tái tục tự động</a></li>
+            <li><a href="#features" class="hover:text-amber-600">Tra cứu quyền lợi siêu tốc</a></li>
+            <li><a href="#features" class="hover:text-amber-600">Kho lưu trữ cho khách hàng</a></li>
+            <li><a href="#security" class="hover:text-amber-600">Bảo mật mã hóa E2EE</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-display font-black text-xs uppercase tracking-wider text-[#0B2046] mb-3">Liên hệ hợp tác</h4>
+          <ul class="space-y-2 text-xs font-bold text-slate-700">
+            <li>Email: <a href="mailto:contact@insuranote.vn" class="hover:underline">contact@insuranote.vn</a></li>
+            <li>Hotline: 1900 xxxx (8h-20h)</li>
+            <li class="text-slate-500 text-[11px]">Hà Nội &amp; TP. Hồ Chí Minh, Việt Nam</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t-2 border-black/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-bold text-slate-500 text-center sm:text-left">
+        <div>© 2026 Insuranote. Bảo lưu mọi quyền. Sản phẩm công nghệ phục vụ cộng đồng đại lý bảo hiểm Việt Nam.</div>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:underline">Điều khoản</a>
+          <span>·</span>
+          <a href="#" class="hover:underline">Bảo mật E2EE</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal / Toast Confirmation Dialog -->
+  <div id="success-modal" class="hidden fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white brutal-border brutal-shadow max-w-md w-full p-5 sm:p-8">
+      <div class="w-12 h-12 sm:w-14 sm:h-14 bg-[#FFE500] brutal-border flex items-center justify-center mx-auto mb-4 brutal-shadow-sm">
+        <svg class="w-7 h-7 sm:w-8 sm:h-8 text-black" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h3 class="font-display font-black text-xl sm:text-2xl text-center text-[#0B2046] mb-2">Chúc mừng bạn đã vào Waitlist!</h3>
+      <p class="text-center text-xs font-medium text-slate-700 mb-5">
+        Email xác nhận kèm mã ưu đãi <strong>6 tháng PRO miễn phí</strong> đã được ghi nhận:
+        <br><strong id="modal-email" class="text-black font-black text-sm break-all">email@example.com</strong>
+      </p>
+      <div class="bg-[#FEF08A] border-2 border-black p-3.5 mb-5 text-center">
+        <span class="text-[11px] font-black uppercase text-amber-900 block mb-1">SỐ THỨ TỰ TRONG DANH SÁCH CHỜ:</span>
+        <div id="modal-queue" class="font-display font-black text-2xl sm:text-3xl text-black">#483</div>
+        <span class="text-[10px] sm:text-[11px] font-bold text-slate-700 block mt-1">(Nằm trong nhóm đại lý tiên phong nhận hỗ trợ VIP)</span>
+      </div>
+      <button onclick="closeModal()" class="w-full bg-[#0B2046] text-white font-black uppercase text-xs py-3 brutal-border shadow-[2px_2px_0px_#000] cursor-pointer">
+        Đóng cửa sổ
+      </button>
+    </div>
+  </div>
+
+  <!-- Vanilla JS Functionality for Standalone Static HTML -->
+  <script>
+    let queueCount = 482;
+
+    function handleFormSubmit(e, emailInputId) {
+      e.preventDefault();
+      const input = document.getElementById(emailInputId);
+      const email = input.value.trim();
+      if (!email || !email.includes('@')) {
+        alert('Vui lòng nhập địa chỉ email hợp lệ!');
+        return;
+      }
+      queueCount += 1;
+      document.getElementById('modal-email').textContent = email;
+      document.getElementById('modal-queue').textContent = '#' + queueCount;
+      document.getElementById('proof-counter').textContent = queueCount + '+ đại lý';
+      document.getElementById('success-modal').classList.remove('hidden');
+      input.value = '';
+    }
+
+    document.getElementById('hero-form').addEventListener('submit', function(e) {
+      handleFormSubmit(e, 'hero-email-input');
+    });
+
+    document.getElementById('bottom-form').addEventListener('submit', function(e) {
+      handleFormSubmit(e, 'bottom-email-input');
+    });
+
+    function closeModal() {
+      document.getElementById('success-modal').classList.add('hidden');
+    }
+
+    // FAQ Accordion Toggle
+    function toggleFaq(btn) {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector('.faq-icon');
+      const isHidden = content.classList.contains('hidden');
+      
+      document.querySelectorAll('.faq-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.faq-icon').forEach(el => el.textContent = '+');
+
+      if (isHidden) {
+        content.classList.remove('hidden');
+        icon.textContent = '−';
+      }
+    }
+
+    // Quick Benefits Live Search
+    const searchInput = document.getElementById('benefit-search-input');
+    const cards = document.querySelectorAll('.benefit-card');
+
+    function filterBenefits() {
+      const query = searchInput.value.toLowerCase().trim();
+      cards.forEach(card => {
+        const text = (card.getAttribute('data-keywords') + ' ' + card.innerText).toLowerCase();
+        if (!query || text.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    searchInput.addEventListener('input', filterBenefits);
+
+    function setSearch(keyword) {
+      searchInput.value = keyword;
+      filterBenefits();
+    }
+  </script>
+</body>
+</html>

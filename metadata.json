@@ -1,0 +1,6 @@
+{
+  "name": "Insuranote - E2EE Insurance Management SaaS Landing Page",
+  "description": "Nền tảng SaaS quản lý hợp đồng bảo hiểm an toàn (E2EE) và nhắc lịch tái tục tự động cho đại lý và khách hàng.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
